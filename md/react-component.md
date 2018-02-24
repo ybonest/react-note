@@ -1,28 +1,35 @@
 ### react基本使用
-1. 运行 cnpm i react react-dom -S 安装包
+1.运行 cnpm i react react-dom -S 安装包
   - react:专门用于创建组件，同时组件的生命周期都在这个包中
   - react-dom:专门进行DOM操作的，最主要的应用场景，就是`ReactDOM.render()`
-2. 在index.html页面中创建容器
+2.在index.html页面中创建容器
 
 ```html
 <!-- 容器，将来，使用 React 创建的虚拟DOM元素，都会被渲染到这个指定的容器中 -->
 <div id="app"></div>
 ```
 
-3. 导入包
+3.导入包
 
 ```javascript
 import React from 'react'
 import ReactDOM from 'react-dom'
 ```
 
-4. 创建虚拟DOM元素
+4.创建虚拟DOM元素
 
 ```javascript
 //  第一个参数： 字符串类型的参数，表示要创建的标签的名称
 //  第二个参数：对象类型的参数， 表示 创建的元素的属性节点
 //  第三个参数： 子节点
 const myh1 = React.createElement('h1', { title: '啊，五环', id: 'myh1' }, '你比四环多一环')
+```
+
+5.渲染
+```
+// 参数1： 表示要渲染的虚拟DOM对象
+// 参数2： 指定容器,注意：这里不能直接放 容器元素的Id字符串，需要放一个容器的DOM对象
+ReactDOM.render(myh1, document.getElementById('app'))
 ```
 
 ### JSX语法
