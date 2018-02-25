@@ -2,6 +2,7 @@
 1.运行 cnpm i react react-dom -S 安装包
   - react:专门用于创建组件，同时组件的生命周期都在这个包中
   - react-dom:专门进行DOM操作的，最主要的应用场景，就是`ReactDOM.render()`
+  
 2.在index.html页面中创建容器
 
 ```html
