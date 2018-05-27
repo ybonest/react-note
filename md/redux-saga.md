@@ -1,6 +1,6 @@
 ### saga辅助函数
 1. takeEvery 
-- 监听`FETCH_DATA_REQUEST`的action，一旦`FETCH_DATA_REQUEST`被`dispatch`,  就会调用`tetchData`函数，`takeEvery`允许多个fetchData同时启动。
+  - 监听`FETCH_DATA_REQUEST`的action，一旦`FETCH_DATA_REQUEST`被`dispatch`,  就会调用`tetchData`函数，`takeEvery`允许多个fetchData同时启动。
 
 ```
 import { call, put } from 'redux-saga/effects';
