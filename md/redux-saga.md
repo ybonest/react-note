@@ -46,6 +46,7 @@ function* watchData(){
 
 #### 3. call
 - 使用`call(fn, ...args)`，fn并不立即调用，而只是返回一个纯文本对象的函数，它会使暂停`Generator`，直到返回的`Promise`被`resolve`
+- `call`中的fn函数为`Generator`函数或者返回一个`Promise`的普通函数
 - call同样支持调用对象方法，可以为调用的函数提供this上下文： `yield call([obj, obj.method], arg1, arg2, ....)`
 - 除call外，apply提供了另外一种调用方式：`yield apply(obj, obj.method, [arg1, arg2, ...])`
 
@@ -260,3 +261,5 @@ function* watchStartBackgroundTask(){
 }
 ```
 
+### Middleware
+#### 1.createSagaMiddleware(options)
