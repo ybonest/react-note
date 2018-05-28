@@ -83,4 +83,4 @@ function dataApp(state={},action){
   }
 }
 ```
-通过上面的`reducer`例子可以看到，reducer中必然是要返回一个新状态的`state`，而且值得注意的是：**`reducer`中不允许直接改变state，而是需要创建一个副本，在副本中改变对应的值后再`return`.
+通过上面的`reducer`例子可以看到，reducer中必然是要返回一个新状态的`state`，而且值得注意的是：**`reducer`中不允许直接改变state，而是需要创建一个副本，在副本中改变对应的值后再`return`**.
