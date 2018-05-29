@@ -83,4 +83,80 @@ function dataApp(state={},action){
   }
 }
 ```
-通过上面的`reducer`例子可以看到，reducer中必然是要返回一个新状态的`state`，而且值得注意的是：**`reducer`中不允许直接改变state，而是需要创建一个副本，在副本中改变对应的值后再`return`**.
+通过上面的`reducer`例子可以看到，reducer中必然是要返回一个新状态的`state`，而且值得注意的是：**`reducer`中不允许直接改变state，而是需要创建一个副本，在副本中改变对应的值后再`return`**。  
+
+实际开发中，项目的`action type`会越来越多，若所有的`action`都放在一个`reducer`函数中处理，会导致这个函数越来越庞大，所以`redux`提供了`reducer`拆分的功能，这个功能由`combineReducers`函数实现。  
+
+`combineReducers`函数使用如下：
+
+```js
+import { combineReducers } from 'redux';
+
+function todos(state=[], action){
+  switch(action.type){
+    case ADD_TODO:
+      // do something
+      return newState; // 返回新的state
+    case TOGGLE_TODO:
+      // do something
+      return newState;
+    default:
+      return state;
+  }
+}
+
+function visibilityFilter(state=SHOW_ALL,action){
+  switch (action.type) {
+  case SET_VISIBILITY_FILTER:
+    return action.filter
+  default:
+    return state
+  }
+}
+
+// 使用combineReducers合并reducer
+const todoApp = combineReducers({
+  visibilityFilter,
+  todos
+})
+```
+
+使用`combineReducers`合并后`state`结构大致如下：
+
+```js
+{
+  todos: […………],
+  visibilityFilter: '',
+}
+```
+
+我们还可以通过为`combineReducers`函数的参数对象配置新的键来修改`state`结构的键
+
+```js
+const todoApp = combineReducers({
+  a: visibilityFilter,
+  b: todos
+})
+```
+
+这样`state`结构大致变成如下模样：
+
+```js
+{
+  a: [],  // 对应todos
+  b: ''   // 对应visibilityFilter
+}
+```
+
+接下来我们来模拟一下`combineReducers`函数
+
+```js
+function todoApp(state = [], action){
+  return {
+    visibilityFilter: visibilityFilter(state.visibilityFilter, action),
+    todos: todos(state.todos, action)
+  }
+}
+```
+
+**注意每个`reducer`只负责`state`中的一部分，因此拆分后需要将对应的`state`部分传给对应的`reducer`,当然如果你使用`redux`提供的`combineReducers`函数则不用考虑这些，它会自动分配**
