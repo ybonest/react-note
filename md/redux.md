@@ -20,7 +20,7 @@
 ```
 
 ### redux三大核心
-#### action
+#### 1. action
 `action`就是一个包含`type`属性的对象，除了`type`属性外，其他属性你可以任意定义，而`type`属性所对应的值是一个唯一的ID值，通常是大写的字符串常量，通过`type`，`reducer`就可以知道你要变化的`state`对象树下的那个分支。
 
 `action`大致模样如下：
@@ -60,7 +60,7 @@ export const fetchData = {
 }
 ```
 
-#### reducer
+#### 2. reducer
 `reducer`通常决定了`state`树的数据结构与`state`变化，它是一个纯函数，有两个参数：旧状态的`state`和`action`。(这里的`action`就是上一节中所介绍的`action`，而`action`如何触发`reducer`改变`state`状态将在下一节的`store`中介绍。)
 
 通常`reducer`函数模样如下：
@@ -160,3 +160,19 @@ function todoApp(state = [], action){
 ```
 
 **注意每个`reducer`只负责`state`中的一部分，因此拆分后需要将对应的`state`部分传给对应的`reducer`,当然如果你使用`redux`提供的`combineReducers`函数则不用考虑这些，它会自动分配**
+
+### 3. store
+`store`的作用就是将`reducer`和`action`关联起来，Store有如下职责：  
+- 维持应用的 state
+- 提供`getState()`方法获取state
+- 提供`dispatch(action)`方法更新state
+- 通过`subscribe(listener)`注册监听器
+- 通过`unsubscribe(listener)`注销监听，**注意此处的unsubscribe是上面注册监听器时返回的函数**  
+
+store使用如下：
+
+```js
+import { createStore } from 'redux';
+import todoApp from './reducers'; //此处是reducer
+let store = createStore(todoApp)
+```
