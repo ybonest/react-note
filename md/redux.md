@@ -176,3 +176,72 @@ import { createStore } from 'redux';
 import todoApp from './reducers'; //此处是reducer
 let store = createStore(todoApp)
 ```
+
+`createStore`函数第二个参数可选，用来设置`state`的初始状态
+
+```js
+let store = createStore(todoApp, {})
+```
+
+当创建`store`后，就可以用`dispatch`,通知`reducer`，从而触发`state`变化
+
+```js
+store.dispatch({type:'NO_SHOW',filter:'hide'})
+```
+
+下面是一个完整的例子：
+
+```js
+// import { combineReducers, createStore } from 'redux';
+//若不套入页面，可以直接用node方式引入，直接终端使用node启动此js文件测试
+const {combineReducers, createStore} = require('redux');
+
+// reducer
+function todoApp(state = {num:0}, action){
+  let copyState = JSON.parse(JSON.stringify(state));
+  switch(action.type){
+    case "ADD_ACTION":
+      copyState.num++;
+      return copyState;
+    case "SUB_ACTION":
+      copyState.num--;
+      return copyState;
+    default:
+      return copyState;
+  }
+}
+
+function visibilityApp(state='NO_SHOW', action){
+  switch(action.type){
+    case 'SHOW_ACTION':
+      return action.filter;
+    case 'NO_SHOW':
+      return action.filter;
+    default:
+      return state;
+  }
+}
+
+const reducer = combineReducers({
+  todoApp,
+  visibilityApp
+})
+
+// store
+const store =  createStore(reducer);
+
+// 监听
+const subscribe = store.subscribe(function(){
+  console.log(store.getState())
+});
+
+// dispatch action
+
+store.dispatch({type:'ADD_ACTION'})
+store.dispatch({type:'SUB_ACTION'})
+store.dispatch({type:'NO_SHOW',filter:'hide'})
+store.dispatch({type:'SHOW_ACTION',filter:'show'})
+
+// 注销监听
+subscribe()
+```
