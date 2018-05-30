@@ -245,3 +245,89 @@ store.dispatch({type:'SHOW_ACTION',filter:'show'})
 // 注销监听
 subscribe()
 ```
+
+### 在React中使用Redux
+
+**注意：redux不仅可以配合react使用，它也配合angular、jquery等环境框架或库使用**
+
+在`react`使用`redux`需要引入新的插件：`react-redux`，`react-redux`提供了`connect`和`Provider`，方便的实现了`react`和`redux`的数据绑定。
+
+#### Provider
+`Provider`方法在`react`入口中使用，将`redux`通过`createStore`创建后的`store`绑定在react的组件上，这样`react`的根组件之下的子组件可以很方便的获取`store`
+
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom'
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import reducer from 'redux/reducer';
+import App from 'component/App';
+
+const store = createStore(reducer);
+
+const rootDiv = (
+  <Provider store={store}>
+    <App/>
+  </Provider>
+);
+
+ReactDOM.render(, document.getElementById('app));
+```
+
+#### connect
+上节中我们已经知道了`Provider`，这几节就用`connet`获取`store`中的`state`和触发`state`变化的`dispatch`.  
+
+- `connect`是个高阶函数，它拥有两个参数，这两个参数都是一个回调函数，
+  - 第一个参数函数接受`state`作为参数，并返回一个对象，这个对象是从`state`中取出来给组件用的值。这个值映射到`react`组件的`props`上。
+  - 第二个参数函数接受`dispatch`作为参数，并返回一个对象，这个对象中定义的是`dispatch action`, 这个对象的中的值会映射到`react`组件的`props`上，如下例子，定义了一个点击事件，当为组件元素绑定这个点击事件后，便会触发`dispatch action`。
+  - 因为`connect`是个高阶组件，经过以上步骤后，它会返回一个函数，这个函数用来接受`react`组件。
+
+```jsx
+import React from 'react';
+
+class Todo extends React.Component {
+  constructor(){
+    super()
+  }
+  render(){
+    ...
+  }
+}
+
+export default connect(
+  state => ({
+    something: state['something']
+  }),
+  dispatch => {
+    return {
+      onTodoClick: id => {
+        dispatch({type:'DO_SOMETHING',id})
+      }
+    }
+  }
+)(Todo)
+```
+
+上例中`connect`中的第二个参数，可以通过`redux`提供的`bindActionCreators`方法实现自动注入`dispatch`。
+
+```jsx
+import {bindActionCreators} from 'redux';
+
+// 这是一个action
+function onTodoClick(){
+  return {
+    type:"DO_SOMETHING",
+    id
+  }
+}
+
+export default connect(
+  state => ({
+    something: state['something']
+  }),
+  // 这里用bindActionCreators可以直接将返回action的函数传入，方法会自动为其包裹dispatch
+  dispatch => ({actions:bindActionCreators({
+    onTodoClick 
+  },dispatch)})
+)(Todo)
+```
